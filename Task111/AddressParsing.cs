@@ -30,16 +30,16 @@ namespace Task111
                 return new OtherIAddressFinder();
             }
         }
-
+        ///public abstract IAddressFinder GetAddressFinderByCountryName(string countryName);
         public IAddressFinder GetAddressFinderByCountryName(string countryName)
         {
-            countryName = countryName.ToLowerInvariant();
-            foreach (string s in germanyNames)
-            {
-                if (s.ToLowerInvariant().Equals(countryName))
-                    return new GermanIAddressFinder();
-            }
-            return new OtherIAddressFinder();
+          countryName = countryName.ToLowerInvariant();
+         foreach (string s in germanyNames)
+        {
+          if (s.ToLowerInvariant().Equals(countryName))
+             return new GermanIAddressFinder();
+         }
+        return new OtherIAddressFinder();
         }
     }
 }

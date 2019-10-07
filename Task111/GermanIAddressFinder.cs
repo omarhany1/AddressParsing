@@ -233,7 +233,15 @@ namespace Task111
                         string boxnumber = "";
                         for (int i = 1; i < line2.Length; i += 1)
                         {
-
+                            if(i == 1)
+                            {
+                                if (!(line2[i].Length == 1 || line2[i].Length==2))
+                                    throw new InvalidAddressException("Incorrect PO box number format");
+                            }
+                            else {
+                                if (!(line2.Length==2))
+                                    throw new InvalidAddressException("Incorrect PO box number format");
+                            }
                             boxnumber += line2[i];
                         }
                         parsed.Add("P.O Box number.", boxnumber);
@@ -245,6 +253,16 @@ namespace Task111
                         string boxnumber = "";
                         for (int i = 0; i < line2.Length - 1; i += 1)
                         {
+                            if (i == 0)
+                            {
+                                if (!(line2[i].Length == 1 || line2[i].Length == 2))
+                                    throw new InvalidAddressException("Incorrect PO box number format");
+                            }
+                            else
+                            {
+                                if (!(line2.Length == 2))
+                                    throw new InvalidAddressException("Incorrect PO box number format");
+                            }
                             boxnumber += line2[i];
                         }
                         parsed.Add("P.O Box number.", boxnumber);

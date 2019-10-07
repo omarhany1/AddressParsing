@@ -195,7 +195,7 @@ namespace Task111
             }
             else
             {
-                parsed = null;
+                throw new InvalidAddressException("Non german addresses must cinsist of either 4 or 5 lines only");
             }
 
 
