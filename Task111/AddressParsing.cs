@@ -34,11 +34,15 @@ namespace Task111
         public IAddressFinder GetAddressFinderByCountryName(string countryName)
         {
           countryName = countryName.ToLowerInvariant();
-         foreach (string s in germanyNames)
-        {
-          if (s.ToLowerInvariant().Equals(countryName))
-             return new GermanIAddressFinder();
-         }
+            foreach (string s in germanyNames)
+            {
+                if (s.ToLowerInvariant().Equals(countryName))
+                {
+                    Console.WriteLine("enter");
+                    return new GermanIAddressFinder();
+                }
+
+            }
         return new OtherIAddressFinder();
         }
     }

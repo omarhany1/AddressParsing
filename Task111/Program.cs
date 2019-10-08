@@ -24,8 +24,9 @@ namespace Task111
             IAddressFinder addressFinder = null;
             try
             {
-                addressFinder = prog.GetAddressFinderByCountryCode("EG");
-                IEnumerable<string> address = new List<string>() { "Omar", "Flurstras 17", "   MONTREAL QC H3Z 2Y7  ", "Germany" };
+                addressFinder = prog.GetAddressFinderByCountryName("Deutschland");
+
+                IEnumerable<string> address = new List<string>() { "Omar", "Flurstras 17", "   Kaiserslautern 67567  ", "Germany" };
                 IDictionary<string, string> parsed1 = addressFinder.ParseAddress(address);
                 foreach (KeyValuePair<string, string> kvp in parsed1)
                 {
@@ -43,8 +44,8 @@ namespace Task111
             try
             {
                 addressFinder2 = prog.GetAddressFinderByCountryCode("EG");
-                IEnumerable<string> address2 = new List<string>() { "Omar", "Flurstras 17", "   MONTREAL QC H3Z 2Y7  ", "Germany" };
-                IDictionary<string, string> parsed2 = addressFinder.ParseAddress(address2);
+                IEnumerable<string> address2 = new List<string>() { "Omar", "Flurstras 17", "   MONTREAL QC H3Z 2Y7  ", "Canada" };
+                IDictionary<string, string> parsed2 = addressFinder2.ParseAddress(address2);
                 foreach (KeyValuePair<string, string> kvp in parsed2)
                 {
                     //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
@@ -58,9 +59,10 @@ namespace Task111
             IAddressFinder addressFinder3 = null;
             try
             {
-                addressFinder3 = prog.GetAddressFinderByCountryCode("EG");
-                IEnumerable<string> address3 = new List<string>() { "Omar", "Flurstras 17", "   MONTREAL QC H3Z 2Y7  ", "Germany" };
-                IDictionary<string, string> parsed3 = addressFinder.ParseAddress(address3);
+                  
+                addressFinder3 = prog.GetAddressFinderByCountryCode("DE");
+                IEnumerable<string> address3 = new List<string>() { "Citibank Privatkunden AG", "68151 MANNHEIM", "GERMANY" };
+                IDictionary<string, string> parsed3 = addressFinder3.ParseAddress(address3);
                 foreach (KeyValuePair<string, string> kvp in parsed3)
                 {
                     //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
