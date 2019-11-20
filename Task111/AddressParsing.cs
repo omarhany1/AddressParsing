@@ -23,11 +23,11 @@ namespace Task111
             countryCode = countryCode.ToLowerInvariant();
             if (countryCode.Equals("de") || countryCode.Equals("deu"))
             {
-                return new GermanIAddressFinder();
+                return new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
             }
             else
             {
-                return new OtherIAddressFinder();
+                return new OtherIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesOther());
             }
         }
         ///public abstract IAddressFinder GetAddressFinderByCountryName(string countryName);
@@ -39,11 +39,11 @@ namespace Task111
                 if (s.ToLowerInvariant().Equals(countryName))
                 {
                     Console.WriteLine("enter");
-                    return new GermanIAddressFinder();
+                    return new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
                 }
 
             }
-        return new OtherIAddressFinder();
+        return new OtherIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesOther());
         }
     }
 }

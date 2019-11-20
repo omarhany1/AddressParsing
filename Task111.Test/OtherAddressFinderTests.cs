@@ -16,7 +16,7 @@ namespace Task111.Test
                 "England"
             };
 
-            var sut = new OtherIAddressFinder();
+            var sut = new OtherIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesOther());
 
             var result = sut.ParseAddress(addressLines);
 
@@ -41,7 +41,7 @@ namespace Task111.Test
                 "England"
             };
 
-            var sut = new OtherIAddressFinder();
+            var sut = new OtherIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesOther());
 
             var result = sut.ParseAddress(addressLines);
 

@@ -11,22 +11,17 @@ namespace Task111
         static void Main(string[] args)
         {
 
-            //handle bad addresees
-            //handle extra spaces cases
-
-            //int n;
-            //bool isNumeric = int.TryParse("78202", out n);
-            //Console.WriteLine(isNumeric);
-            //string input = "helloworld";
-            //bool isDigitPresent = input.Any(c => char.IsDigit(c));
-            //Environment.Exit(-1);
             AddressParsing prog = new AddressParsing();
+
             IAddressFinder addressFinder = null;
             try
             {
                 addressFinder = prog.GetAddressFinderByCountryName("Deutschland");
 
-                IEnumerable<string> address = new List<string>() { "Omar", "Flurstras 17", "   Kaiserslautern 67567  ", "Germany" };
+                IEnumerable<string> address = new List<string>() { "John Doe",
+                "Trippstadterstrasse",
+                "67663 Kaiserslautern",
+                "GERMANY" };
                 IDictionary<string, string> parsed1 = addressFinder.ParseAddress(address);
                 foreach (KeyValuePair<string, string> kvp in parsed1)
                 {
@@ -38,7 +33,6 @@ namespace Task111
             {
                 Console.WriteLine(e.Message);
             }
-
 
             IAddressFinder addressFinder2 = null;
             try
@@ -56,6 +50,7 @@ namespace Task111
             {
                 Console.WriteLine(e.Message);
             }
+
             IAddressFinder addressFinder3 = null;
             try
             {
@@ -73,10 +68,6 @@ namespace Task111
             {
                 Console.WriteLine(e.Message);
             }
-
-
-
-            Console.WriteLine("Hello World!");
         }
     }
    

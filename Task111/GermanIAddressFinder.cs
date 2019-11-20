@@ -5,135 +5,23 @@ using System.Globalization;
 
 namespace Task111
 {
-    public class GermanIAddressFinder : IAddressFinder
+    public class GermanIAddressFinder : CommonAddressFinder
     {
-        public string[] postcodeLocality(string line)
+        IStringUtilities stringUtilities;
+        IPostCodeExtractionUtilities postCodeExtraction;
+
+        public GermanIAddressFinder(IStringUtilities stringUtilities, IPostCodeExtractionUtilities postCodeExtraction)
         {
-            string[] x = { "", "" };
-            string[] s = line.Split(' ');
-            if (s.Length < 2)
-            {
-                throw new InvalidAddressException("This line is incomplete (either missing poscode or locality or both)");
-            }
-            if (s[0].ToCharArray()[0] <= '9' && s[0].ToCharArray()[0] >= '0') //handling sequence of postcode and locality and multi word locality
-            {
-                int n;
-                bool isNumeric = int.TryParse(s[0], out n);
-                if ((s[0].Length != 5) || !isNumeric)
-                {
-                    throw new InvalidAddressException("Postcode must be exactly five digits");
-                }
-                //parsed.Add("postcode", s[0]);
-                x[0] = s[0];
-                string locality = "";
-                for (int i = 1; i < s.Length; i += 1)
-                {
-                    if (i == s.Length - 1)
-                        locality = locality + s[i];
-                    else
-                        locality = locality + s[i] + ' ';
-                }
-                //parsed.Add("locality", locality);
-                x[1] = locality;
-
-            }
-            else if (s[s.Length - 1].ToCharArray()[0] <= '9' && s[s.Length - 1].ToCharArray()[0] >= '0')
-            {
-                int n;
-                bool isNumeric = int.TryParse(s[s.Length - 1], out n);
-                if ((s[s.Length - 1].Length != 5) || !isNumeric)
-                {
-                    throw new InvalidAddressException("Postcode must be exactly five digits");
-                }
-                //parsed.Add("postcode", s[s.Length - 1]);
-                x[0] = s[s.Length - 1];
-                string locality = "";
-                for (int i = 0; i < s.Length - 1; i += 1)
-                {
-                    if (i == s.Length - 2)
-                        locality = locality + s[i];
-                    else
-                        locality = locality + s[i] + ' ';
-                }
-                x[1] = locality;
-                //parsed.Add("locality", locality);
-            }
-            else
-            {
-                throw new InvalidAddressException("Postcode must be supplied and it must be in beginning or end of line");
-            }
-
-            return x;
+            this.stringUtilities = stringUtilities;
+            this.postCodeExtraction = postCodeExtraction;
         }
-        public string[] streetNo(string line)
-        {
-            string[] x = { "", "" };
-            string[] s = line.Split(' ');
 
-            //if (s[s.Length - 1].Equals(' '))
-            if (s[s.Length - 1].Length == 0)
-            {
-                s = s.Take(s.Count() - 1).ToArray();
-            }
-
-            if (s.Length < 2)
-            {
-                throw new InvalidAddressException("This line is incomplete (either missing streen name or house number or both)");
-            }
-            if (s[0].ToCharArray()[0] <= '9' && s[0].ToCharArray()[0] >= '0') //handling sequence of postcode and locality and multi word locality
-            {
-                //parsed.Add("house number", s[0]);
-                x[0] = s[0];
-                string streetname = "";
-                for (int i = 1; i < s.Length; i += 1)
-                {
-                    if (i == s.Length - 1)
-                        streetname = streetname + s[i];
-                    else
-                        streetname = streetname + s[i] + ' ';
-                }
-                //parsed.Add("locality", locality);
-                x[1] = streetname;
-
-            }
-            else if (s[s.Length - 1].ToCharArray()[0] <= '9' && s[s.Length - 1].ToCharArray()[0] >= '0')
-            {
-
-                //parsed.Add("house number", s[s.Length - 1]);
-                x[0] = s[s.Length - 1];
-                //Console.WriteLine(x[0]);
-                string streetname = "";
-                for (int i = 0; i < s.Length - 1; i += 1)
-                {
-                    if (i == s.Length - 2)
-                        streetname = streetname + s[i];
-                    else
-                        streetname = streetname + s[i] + ' ';
-                }
-                x[1] = streetname;
-                //parsed.Add("locality", locality);
-            }
-            else
-            {
-                throw new InvalidAddressException("House number must be supplied in beginning or end of line");
-            }
-
-            return x;
-        }
-        public string[] triminput(string[] x)
-        {
-            for (int i = 0; i < x.Length; i += 1)
-            {
-                x[i] = x[i].Trim();
-            }
-            return x;
-        }
-        public IDictionary<string, string> ParseAddress(IEnumerable<string> addressLines)
+        public override IDictionary<string, string> ParseAddress(IEnumerable<string> addressLines)
         {
             IDictionary<string, string> parsed = new Dictionary<string, string>();
             //x.Add("addressee",);
             string[] addressLinesArray = addressLines.ToArray();
-            addressLinesArray = triminput(addressLinesArray);
+            addressLinesArray = stringUtilities.triminput(addressLinesArray);
 
 
 
@@ -142,16 +30,14 @@ namespace Task111
 
                 parsed.Add("company name", addressLinesArray[0]);
 
-                string[] line2 = postcodeLocality(addressLinesArray[1]);
+                string[] line2 = postCodeExtraction.postcodeLocality(addressLinesArray[1]);
                 parsed.Add("postcode", line2[0]);
                 parsed.Add("locality", line2[1]);
 
-                //parsed.Add("postcode + locality", addressLinesArray[1]);
                 if (!(addressLinesArray[2].ToLowerInvariant().Equals("germany")))
                     throw new InvalidAddressException("Third line must be country and German address must have Germany as a country");
                 parsed.Add("country", addressLinesArray[2]);
-                //Console.WriteLine("enter");
-                // to do add else invalid
+                
 
 
             }
@@ -162,7 +48,7 @@ namespace Task111
                 {
                     parsed.Add("poste restante", addressLinesArray[1]);
                     //parsed.Add("postcode + locality", addressLinesArray[2]);
-                    string[] line = postcodeLocality(addressLinesArray[2]);
+                    string[] line = postCodeExtraction.postcodeLocality(addressLinesArray[2]);
                     parsed.Add("postcode", line[0]);
                     parsed.Add("locality", line[1]);
 
@@ -207,15 +93,32 @@ namespace Task111
                     }
                     //Console.WriteLine(streetAndNumber);
                     string[] line2 = streetNo(streetAndNumber);
-                    parsed.Add("house number", line2[0]);
-                    parsed.Add("street name", line2[1]);
+
+                    if (line2.Length == 2)
+                    {
+                        parsed.Add("house number", line2[0]);
+                        parsed.Add("street name", line2[1]);
+                    }
+                    else
+                    {
+                        if (line2[0].ToCharArray()[0] <= '9' && line2[0].ToCharArray()[0] >= '0')
+                        {
+                            parsed.Add("house number", line2[0]);
+                        }
+                        else
+                        {
+                            parsed.Add("street name", line2[0]);
+
+                        }
+                    }
 
                     string[] line22 = streetNo(appart);
+
                     parsed.Add("appartment number", line22[0]);
 
 
 
-                    string[] line3 = postcodeLocality(addressLinesArray[2]);
+                    string[] line3 = postCodeExtraction.postcodeLocality(addressLinesArray[2]);
                     parsed.Add("postcode", line3[0]);
                     parsed.Add("locality", line3[1]);
 
@@ -239,7 +142,7 @@ namespace Task111
                                     throw new InvalidAddressException("Incorrect PO box number format");
                             }
                             else {
-                                if (!(line2.Length==2))
+                                if (!(line2[i].Length==2))
                                     throw new InvalidAddressException("Incorrect PO box number format");
                             }
                             boxnumber += line2[i];
@@ -275,7 +178,7 @@ namespace Task111
                     }
 
                     //parsed.Add("P.O Box number.", addressLinesArray[1]);
-                    string[] line = postcodeLocality(addressLinesArray[2]);
+                    string[] line = postCodeExtraction.postcodeLocality(addressLinesArray[2]);
                     parsed.Add("postcode", line[0]);
                     parsed.Add("locality", line[1]);
                     parsed.Add("country", addressLinesArray[3]);
@@ -284,12 +187,27 @@ namespace Task111
                 else //Street address: v2
                 {
                     //parsed.Add("addresse", addressLinesArray[0]);
-
                     string[] line2 = streetNo(addressLinesArray[1]);
-                    parsed.Add("house number", line2[0]);
-                    parsed.Add("street name", line2[1]);
+                    if (line2.Length == 2)
+                    {
+                        parsed.Add("house number", line2[0]);
+                        parsed.Add("street name", line2[1]);
+                    }
+                    else
+                    {
+                        
+                        if (line2[0].ToCharArray()[0] <= '9' && line2[0].ToCharArray()[0] >= '0')
+                        {
+                            parsed.Add("house number", line2[0]);
+                        }
+                        else
+                        {
+                            parsed.Add("street name", line2[0]);
 
-                    string[] line = postcodeLocality(addressLinesArray[2]);
+                        }
+                    }
+
+                    string[] line = postCodeExtraction.postcodeLocality(addressLinesArray[2]);
                     parsed.Add("postcode", line[0]);
                     parsed.Add("locality", line[1]);
 
@@ -311,10 +229,25 @@ namespace Task111
                 {
                     parsed.Add("addressee", addressLinesArray[1]);
                     string[] line3 = streetNo(addressLinesArray[2]);
-                    parsed.Add("house number", line3[0]);
-                    parsed.Add("street name", line3[1]);
+                    if (line3.Length == 2)
+                    {
+                        parsed.Add("house number", line3[0]);
+                        parsed.Add("street name", line3[1]);
+                    }
+                    else
+                    {
+                        if (line3[0].ToCharArray()[0] <= '9' && line3[0].ToCharArray()[0] >= '0')
+                        {
+                            parsed.Add("house number", line3[0]);
+                        }
+                        else
+                        {
+                            parsed.Add("street name", line3[0]);
+
+                        }
+                    }
                     //parsed.Add("street + No.", addressLinesArray[2]);
-                    string[] line4 = postcodeLocality(addressLinesArray[3]);
+                    string[] line4 = postCodeExtraction.postcodeLocality(addressLinesArray[3]);
                     parsed.Add("postcode", line4[0]);
                     parsed.Add("locality", line4[1]);
                     //parsed.Add("postcode + locality", addressLinesArray[3]);
@@ -350,7 +283,7 @@ namespace Task111
                     parsed.Add("parcel machine number (packstation)", line3[0]);
                     Console.WriteLine(line3[0]);
 
-                    string[] line4 = postcodeLocality(addressLinesArray[3]);
+                    string[] line4 = postCodeExtraction.postcodeLocality(addressLinesArray[3]);
                     parsed.Add("postcode", line4[0]);
                     parsed.Add("locality of parcel machine", line4[1]);
                     //parsed.Add("postcode + + locality of parcel machine", addressLinesArray[3]);
@@ -365,10 +298,25 @@ namespace Task111
                     parsed.Add("addressee", addressLinesArray[0]);
                     parsed.Add("sub-locality", addressLinesArray[1]);
                     string[] line3 = streetNo(addressLinesArray[2]);
-                    parsed.Add("house number", line3[0]);
-                    parsed.Add("street name", line3[1]);
+                    if (line3.Length == 2)
+                    {
+                        parsed.Add("house number", line3[0]);
+                        parsed.Add("street name", line3[1]);
+                    }
+                    else
+                    {
+                        if (line3[0].ToCharArray()[0] <= '9' && line3[0].ToCharArray()[0] >= '0')
+                        {
+                            parsed.Add("house number", line3[0]);
+                        }
+                        else
+                        {
+                            parsed.Add("street name", line3[0]);
+
+                        }
+                    }
                     //parsed.Add("street + No.", addressLinesArray[2]);
-                    string[] line4 = postcodeLocality(addressLinesArray[3]);
+                    string[] line4 = postCodeExtraction.postcodeLocality(addressLinesArray[3]);
                     parsed.Add("postcode", line4[0]);
                     parsed.Add("locality", line4[1]);
                     //parsed.Add("postcode + locality", addressLinesArray[3]);
@@ -392,6 +340,8 @@ namespace Task111
             return parsed;
 
         }
+
+        
     }
 
 }
