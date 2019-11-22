@@ -6,6 +6,11 @@ namespace Task111
 {
     public class InvalidAddressException : Exception
     {
+        /// <summary> 
+        /// The class that defines the exception that
+        /// is thrown if an address is invalid.
+        /// </summary>
+        
         public InvalidAddressException()
         {
 

@@ -4,80 +4,104 @@ using System.Linq;
 using System.Globalization;
 namespace Task111
 {
+    /// <summary>
+    /// This class contains methods that will be used
+    /// in both German and non German Address Finders.
+    /// </summary>
+    
     public abstract class CommonAddressFinder : IAddressFinder
     {
+
+        /// <summary>
+        /// Responsible for extracting the streen name and house number in the line
+        /// that contains this information.
+        /// </summary>
+        /// <param name="line">The input line that contains the street name and house number.</param>
+        /// /// <returns>
+        /// The extracted relevant street and number relevant information
+        /// where each represents an element in the array.
+        /// </returns>
+
         public string[] streetNo(string line)
         {
-            string[] x = { "", "" };
-            string[] s = line.Split(' ');
+            string[] extracted = { "", "" };
+            string[] splittedLine = line.Split(' ');
 
-            //if (s[s.Length - 1].Equals(' '))
-            if (s[s.Length - 1].Length == 0)
+            //Checks for extra spaces and removes them
+            if (splittedLine[splittedLine.Length - 1].Length == 0)
             {
-                s = s.Take(s.Count() - 1).ToArray();
+                splittedLine = splittedLine.Take(splittedLine.Count() - 1).ToArray();
             }
 
-            if (s.Length < 2)
+            //Checks if the line is missing values for streen name or house number.
+            if (splittedLine.Length < 2)
             {
-                
-                if (s.Length == 1)
+                //If the line is missing one of them it just returns
+                //the relevant found information (either the street name or the house number          
+                if (splittedLine.Length == 1)
                 {
-                    string availableString = "";
-                    for (int i = 0; i < s.Length; i += 1)
-                    {
-                        if (i == s.Length - 1)
-                            availableString = availableString + s[i];
-                        else
-                            availableString = availableString + s[i] + ' ';
-                    }
-                    string[] y = {"" };
-                    y[0] = availableString;
-                    return y;
+                    string availableString = splittedLine[0];
+                    
+                    extracted = new string[1] ;
+                    extracted[0] = availableString;
+                    return extracted;
                 }
                 else
-                    throw new InvalidAddressException("This line is incomplete (either missing streen name or house number or both)");
+                    throw new InvalidAddressException("This line is empty");
             }
             else
             {
-                if (s[0].ToCharArray()[0] <= '9' && s[0].ToCharArray()[0] >= '0')
+                //Checks if the house number is in the beginning of the line
+                if (splittedLine[0].ToCharArray()[0] <= '9' && splittedLine[0].ToCharArray()[0] >= '0')
                 {
-                    //parsed.Add("house number", s[0]);
-                    x[0] = s[0];
+                    //Puts the house number in the first position of the extracted info array
+                    extracted[0] = splittedLine[0];
+
+
                     string streetname = "";
-                    for (int i = 1; i < s.Length; i += 1)
+                    for (int i = 1; i < splittedLine.Length; i += 1)
                     {
-                        if (i == s.Length - 1)
-                            streetname = streetname + s[i];
+                        if (i == splittedLine.Length - 1)
+                            streetname = streetname + splittedLine[i];
                         else
-                            streetname = streetname + s[i] + ' ';
+                            streetname = streetname + splittedLine[i] + ' ';
                     }
-                    //parsed.Add("locality", locality);
-                    x[1] = streetname;
+                    extracted[1] = streetname;
 
                 }
-                else if (s[s.Length - 1].ToCharArray()[0] <= '9' && s[s.Length - 1].ToCharArray()[0] >= '0')
+
+                //Checks if the house number is in the end of the line
+                else if (splittedLine[splittedLine.Length - 1].ToCharArray()[0] <= '9' && splittedLine[splittedLine.Length - 1].ToCharArray()[0] >= '0')
                 {
 
-                    //parsed.Add("house number", s[s.Length - 1]);
-                    x[0] = s[s.Length - 1];
-                    //Console.WriteLine(x[0]);
+                    extracted[0] = splittedLine[splittedLine.Length - 1];
                     string streetname = "";
-                    for (int i = 0; i < s.Length - 1; i += 1)
+                    for (int i = 0; i < splittedLine.Length - 1; i += 1)
                     {
-                        if (i == s.Length - 2)
-                            streetname = streetname + s[i];
+                        if (i == splittedLine.Length - 2)
+                            streetname = streetname + splittedLine[i];
                         else
-                            streetname = streetname + s[i] + ' ';
+                            streetname = streetname + splittedLine[i] + ' ';
                     }
-                    x[1] = streetname;
-                    //parsed.Add("locality", locality);
+                    extracted[1] = streetname;
                 }
+                //This is the case were there is only a street name and it is multi word
                 else
                 {
-                    throw new InvalidAddressException("House number must be supplied in beginning or end of line");
+                    string streetname = "";
+                    for (int i = 0; i < splittedLine.Length - 1; i += 1)
+                    {
+                        if (i == splittedLine.Length - 2)
+                            streetname = streetname + splittedLine[i];
+                        else
+                            streetname = streetname + splittedLine[i] + ' ';
+                    }
+                    extracted = new string[1];
+                    extracted[0] = streetname;
+                    
                 }
             }
-            return x;
+            return extracted;
         }
 
 

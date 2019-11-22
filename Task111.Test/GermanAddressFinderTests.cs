@@ -19,7 +19,7 @@ namespace Task111.Test
                 "GERMANY"
             };
 
-            var sut = new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
+            var sut = new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman(),new GermanAddressUtilities());
 
             var result = sut.ParseAddress(addressLines);
 
@@ -55,7 +55,7 @@ namespace Task111.Test
                 "GERMANY"
             };
 
-            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
+            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman(),new GermanAddressUtilities());
 
             var result = sut.ParseAddress(addressLines);
 
@@ -76,7 +76,7 @@ namespace Task111.Test
                 "GERMANY"
             };
 
-            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
+            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman(),new GermanAddressUtilities());
 
             var result = sut.ParseAddress(addressLines);
 
@@ -101,7 +101,7 @@ namespace Task111.Test
                 "GERMANY"
             };
 
-            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
+            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman(),new GermanAddressUtilities());
 
             var result = sut.ParseAddress(addressLines);
 
@@ -119,7 +119,7 @@ namespace Task111.Test
                 "GERMANY"
             };
 
-            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
+            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman(),new GermanAddressUtilities());
 
             var result = sut.ParseAddress(addressLines);
 
@@ -140,7 +140,7 @@ namespace Task111.Test
                 "GERMANY"
             };
 
-            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
+            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman(),new GermanAddressUtilities());
 
             var result = sut.ParseAddress(addressLines);
 
@@ -166,7 +166,7 @@ namespace Task111.Test
                 "GERMANY"
             };
 
-            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
+            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman(),new GermanAddressUtilities());
 
             var result = sut.ParseAddress(addressLines);
 
@@ -189,7 +189,7 @@ namespace Task111.Test
                 "GERMANY"
             };
 
-            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman());
+            var sut =new GermanIAddressFinder(new StringUtilities(), new PostCodeExtractionUtilitiesGerman(),new GermanAddressUtilities());
 
             var result = sut.ParseAddress(addressLines);
 

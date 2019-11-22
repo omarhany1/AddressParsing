@@ -14,7 +14,7 @@ namespace Task111
             AddressParsing prog = new AddressParsing();
 
             IAddressFinder addressFinder = null;
-            try
+            /*try
             {
                 addressFinder = prog.GetAddressFinderByCountryName("Deutschland");
 
@@ -32,10 +32,10 @@ namespace Task111
             catch (InvalidAddressException e)
             {
                 Console.WriteLine(e.Message);
-            }
+            }*/
 
             IAddressFinder addressFinder2 = null;
-            try
+            /*try
             {
                 addressFinder2 = prog.GetAddressFinderByCountryCode("EG");
                 IEnumerable<string> address2 = new List<string>() { "Omar", "Flurstras 17", "   MONTREAL QC H3Z 2Y7  ", "Canada" };
@@ -49,14 +49,14 @@ namespace Task111
             catch (InvalidAddressException e)
             {
                 Console.WriteLine(e.Message);
-            }
+            }*/
 
             IAddressFinder addressFinder3 = null;
             try
             {
                   
                 addressFinder3 = prog.GetAddressFinderByCountryCode("DE");
-                IEnumerable<string> address3 = new List<string>() { "Citibank Privatkunden AG", "68151 MANNHEIM", "GERMANY" };
+                IEnumerable<string> address3 = new List<string>() { "Lara Lustig    ", "1234567", "Packstation 101", "53113 BONN", "GERMANY" };
                 IDictionary<string, string> parsed3 = addressFinder3.ParseAddress(address3);
                 foreach (KeyValuePair<string, string> kvp in parsed3)
                 {
