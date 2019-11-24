@@ -52,6 +52,7 @@ namespace Task111
             }
             separatedAppartmentAddress[0] = streetAndNumber;
             separatedAppartmentAddress[1] = appart;
+            
             return separatedAppartmentAddress;
         }
 

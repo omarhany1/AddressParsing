@@ -56,7 +56,7 @@ namespace Task111
             {
                   
                 addressFinder3 = prog.GetAddressFinderByCountryCode("DE");
-                IEnumerable<string> address3 = new List<string>() { "Lara Lustig    ", "1234567", "Packstation 101", "53113 BONN", "GERMANY" };
+                IEnumerable<string> address3 = new List<string>() { "Lara Lustig    ", "Rhondorfer Str. 666 // Appartment 47", "53113 BONN", "GERMANY" };
                 IDictionary<string, string> parsed3 = addressFinder3.ParseAddress(address3);
                 foreach (KeyValuePair<string, string> kvp in parsed3)
                 {
